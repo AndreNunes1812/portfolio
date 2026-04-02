@@ -1,0 +1,1 @@
+-- Migração inicial (placeholder). Ajuste o schema conforme o domínio do projeto.

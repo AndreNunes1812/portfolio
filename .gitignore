@@ -1,0 +1,49 @@
+# Compilação / Build (Maven)
+**/target/
+target/
+
+# Bytecode e artefatos Java
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+# Logs
+*.log
+
+# Arquivos temporários
+*.tmp
+*.swp
+*.bak
+*.cache
+
+# IDE - IntelliJ
+.idea/
+*.iml
+
+# IDE - Eclipse
+.project
+.classpath
+.settings/
+
+# IDE - VSCode (opcional: comente se quiser versionar config da equipe)
+.vscode/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Variáveis de ambiente (não versionar segredos)
+.env
+.env.*
+!.env.example
+
+# Maven
+dependency-reduced-pom.xml
+
+# Gradle
+.gradle/
+
+# Cobertura / relatórios de teste (gerados fora do target em alguns setups)
+coverage/

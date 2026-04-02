@@ -1,0 +1,8 @@
+spring:
+  jpa:
+    show-sql: false
+
+logging:
+  level:
+    br.com.portfolio: INFO
+    org.hibernate.SQL: WARN
