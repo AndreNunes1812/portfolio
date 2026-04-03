@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,5 +39,16 @@ class RelatorioPortfolioServiceTest {
         assertThat(r.porStatus().getFirst().quantidadeProjetos()).isEqualTo(2L);
         assertThat(r.mediaDuracaoDiasProjetosEncerrados()).isEqualTo(30.5);
         assertThat(r.totalMembrosUnicosAlocados()).isEqualTo(5L);
+    }
+
+    @Test
+    void falhaQuandoQuantidadePorStatusNaoENumerica() {
+        java.util.List<Object[]> linhas = new java.util.ArrayList<>();
+        linhas.add(new Object[]{StatusProjeto.EM_ANALISE, "texto-invalido", BigDecimal.ZERO});
+        when(projetoRepository.agregarPorStatus()).thenReturn(linhas);
+
+        assertThatThrownBy(() -> relatorioPortfolioService.gerar())
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Valor numérico inesperado");
     }
 }

@@ -7,17 +7,18 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Schema(description = "Projeto com classificação de risco calculada")
 public record ProjetoResponse(
-        Long id,
+        UUID id,
         String nome,
         LocalDate dataInicio,
         LocalDate previsaoTermino,
         LocalDate dataRealTermino,
         BigDecimal orcamentoTotal,
         String descricao,
-        Long gerenteId,
+        UUID gerenteId,
         String nomeGerente,
         StatusProjeto status,
         ClassificacaoRisco classificacaoRisco,

@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/external/members")
 @RequiredArgsConstructor
@@ -38,7 +40,7 @@ public class MembroExternoController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar membro por id")
-    public MembroExternoResponse buscar(@PathVariable Long id) {
+    public MembroExternoResponse buscar(@PathVariable UUID id) {
         return membroExternoService.buscarPorId(id);
     }
 

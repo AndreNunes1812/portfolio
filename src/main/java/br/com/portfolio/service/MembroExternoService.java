@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class MembroExternoService {
@@ -21,8 +23,12 @@ public class MembroExternoService {
 
     @Transactional
     public MembroExternoResponse criar(MembroExternoRequest request) {
+        String nome = request.nome().trim();
+        if (membroRepository.existsByNomeIgnoreCase(nome)) {
+            throw new NegocioException("Já existe membro cadastrado com este nome.");
+        }
         Membro m = Membro.builder()
-                .nome(request.nome().trim())
+                .nome(nome)
                 .atribuicao(request.atribuicao())
                 .build();
         m = membroRepository.save(m);
@@ -30,7 +36,7 @@ public class MembroExternoService {
     }
 
     @Transactional(readOnly = true)
-    public MembroExternoResponse buscarPorId(Long id) {
+    public MembroExternoResponse buscarPorId(UUID id) {
         Membro m = membroRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Membro não encontrado: " + id));
         return toResponse(m);
@@ -41,7 +47,7 @@ public class MembroExternoService {
         return membroRepository.findAll(pageable).map(this::toResponse);
     }
 
-    public Membro obterEntidade(Long id) {
+    public Membro obterEntidade(UUID id) {
         return membroRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Membro não encontrado: " + id));
     }

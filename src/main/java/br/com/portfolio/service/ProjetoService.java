@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,7 +68,7 @@ public class ProjetoService {
     }
 
     @Transactional
-    public ProjetoResponse atualizar(Long id, ProjetoUpdateRequest request) {
+    public ProjetoResponse atualizar(UUID id, ProjetoUpdateRequest request) {
         Projeto projeto = projetoRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Projeto não encontrado: " + id));
 
@@ -97,7 +98,7 @@ public class ProjetoService {
     }
 
     @Transactional(readOnly = true)
-    public ProjetoResponse buscarPorId(Long id) {
+    public ProjetoResponse buscarPorId(UUID id) {
         Projeto projeto = projetoRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Projeto não encontrado: " + id));
         projeto.getGerente().getNome();
@@ -117,7 +118,7 @@ public class ProjetoService {
     }
 
     @Transactional
-    public ProjetoResponse atualizarStatus(Long id, StatusProjeto novoStatus) {
+    public ProjetoResponse atualizarStatus(UUID id, StatusProjeto novoStatus) {
         Projeto projeto = projetoRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Projeto não encontrado: " + id));
         statusProjetoValidator.validarTransicao(projeto.getStatus(), novoStatus);
@@ -128,7 +129,7 @@ public class ProjetoService {
     }
 
     @Transactional
-    public void excluir(Long id) {
+    public void excluir(UUID id) {
         Projeto projeto = projetoRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Projeto não encontrado: " + id));
         if (StatusProjeto.STATUS_PROIBE_EXCLUSAO.contains(projeto.getStatus())) {
@@ -144,7 +145,7 @@ public class ProjetoService {
         }
     }
 
-    private void validarListaMembros(List<Long> ids) {
+    private void validarListaMembros(List<UUID> ids) {
         if (ids == null || ids.size() < MIN_MEMBROS || ids.size() > MAX_MEMBROS) {
             throw new NegocioException("Cada projeto deve ter entre " + MIN_MEMBROS + " e " + MAX_MEMBROS + " membros alocados.");
         }
@@ -154,14 +155,14 @@ public class ProjetoService {
         }
     }
 
-    private Set<Membro> carregarFuncionarios(List<Long> ids) {
+    private Set<Membro> carregarFuncionarios(List<UUID> ids) {
         return ids.stream()
                 .map(membroExternoService::obterEntidade)
                 .peek(m -> membroExternoService.garantirAtribuicao(m, AtribuicaoMembro.FUNCIONARIO))
                 .collect(Collectors.toCollection(HashSet::new));
     }
 
-    private void validarLimiteProjetosAtivosPorMembro(Long membroId, Long projetoIdExcluido) {
+    private void validarLimiteProjetosAtivosPorMembro(UUID membroId, UUID projetoIdExcluido) {
         long ativos = projetoRepository.countProjetosAtivosPorMembro(membroId, projetoIdExcluido);
         if (ativos >= MAX_PROJETOS_ATIVOS_POR_MEMBRO) {
             throw new NegocioException(

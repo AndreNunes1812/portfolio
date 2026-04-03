@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface ProjetoRepository extends JpaRepository<Projeto, Long>, JpaSpecificationExecutor<Projeto> {
+import java.util.UUID;
+
+public interface ProjetoRepository extends JpaRepository<Projeto, UUID>, JpaSpecificationExecutor<Projeto> {
 
     @Query(value = """
             SELECT COUNT(DISTINCT p.id) FROM projeto p
@@ -15,7 +17,7 @@ public interface ProjetoRepository extends JpaRepository<Projeto, Long>, JpaSpec
             AND p.status NOT IN ('ENCERRADO', 'CANCELADO')
             AND (:projetoId IS NULL OR p.id <> :projetoId)
             """, nativeQuery = true)
-    long countProjetosAtivosPorMembro(@Param("membroId") Long membroId, @Param("projetoId") Long projetoId);
+    long countProjetosAtivosPorMembro(@Param("membroId") UUID membroId, @Param("projetoId") UUID projetoId);
 
     @Query("""
             SELECT p.status, COUNT(p), COALESCE(SUM(p.orcamentoTotal), 0)

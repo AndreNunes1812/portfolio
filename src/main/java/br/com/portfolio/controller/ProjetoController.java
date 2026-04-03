@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/v1/projetos")
 @RequiredArgsConstructor
@@ -46,14 +48,14 @@ public class ProjetoController {
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar projeto")
     public ProjetoResponse atualizar(
-            @PathVariable Long id,
+            @PathVariable UUID id,
             @Valid @RequestBody ProjetoUpdateRequest request) {
         return projetoService.atualizar(id, request);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar projeto por id", description = "Inclui classificação de risco calculada.")
-    public ProjetoResponse buscar(@PathVariable Long id) {
+    public ProjetoResponse buscar(@PathVariable UUID id) {
         return projetoService.buscarPorId(id);
     }
 
@@ -69,7 +71,7 @@ public class ProjetoController {
     @PatchMapping("/{id}/status")
     @Operation(summary = "Alterar status", description = "Respeita a sequência de status ou permite cancelamento (exceto a partir de encerrado/cancelado).")
     public ProjetoResponse atualizarStatus(
-            @PathVariable Long id,
+            @PathVariable UUID id,
             @Valid @RequestBody StatusProjetoUpdateRequest request) {
         return projetoService.atualizarStatus(id, request.novoStatus());
     }
@@ -77,7 +79,7 @@ public class ProjetoController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Excluir projeto", description = "Bloqueado para status iniciado, em andamento ou encerrado.")
-    public void excluir(@PathVariable Long id) {
+    public void excluir(@PathVariable UUID id) {
         projetoService.excluir(id);
     }
 }

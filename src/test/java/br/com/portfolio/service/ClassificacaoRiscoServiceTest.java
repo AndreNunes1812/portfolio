@@ -77,7 +77,21 @@ class ClassificacaoRiscoServiceTest {
     @Test
     @DisplayName("Argumentos nulos geram IllegalArgumentException")
     void nulos() {
-        assertThatThrownBy(() -> service.calcular(null, LocalDate.now(), LocalDate.now()))
+        LocalDate hoje = LocalDate.now();
+        assertThatThrownBy(() -> service.calcular(null, hoje, hoje))
                 .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> service.calcular(BigDecimal.ONE, null, hoje))
+                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> service.calcular(BigDecimal.ONE, hoje, null))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("Prazo negativo (previsão antes do início) trata meses como zero")
+    void prazoNegativoViraZeroMeses() {
+        LocalDate inicio = LocalDate.of(2026, 6, 1);
+        LocalDate previsaoAntes = LocalDate.of(2026, 1, 1);
+        assertThat(service.calcular(new BigDecimal("50000"), inicio, previsaoAntes))
+                .isEqualTo(ClassificacaoRisco.BAIXO);
     }
 }

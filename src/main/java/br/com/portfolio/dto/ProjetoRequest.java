@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Schema(description = "Criação de projeto (1 a 10 membros funcionários)")
 public record ProjetoRequest(
@@ -19,7 +20,7 @@ public record ProjetoRequest(
         LocalDate dataRealTermino,
         @NotNull @DecimalMin("0.0") BigDecimal orcamentoTotal,
         String descricao,
-        @NotNull Long gerenteId,
-        @NotEmpty @Size(min = 1, max = 10) List<Long> idsMembrosFuncionarios
+        @NotNull UUID gerenteId,
+        @NotEmpty @Size(min = 1, max = 10) List<UUID> idsMembrosFuncionarios
 ) {
 }

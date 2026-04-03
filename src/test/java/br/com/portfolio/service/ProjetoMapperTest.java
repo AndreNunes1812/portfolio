@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,14 +22,16 @@ class ProjetoMapperTest {
         ClassificacaoRiscoService risco = new ClassificacaoRiscoService();
         ProjetoMapper mapper = new ProjetoMapper(risco);
 
-        Membro g = Membro.builder().id(1L).nome("G").atribuicao(AtribuicaoMembro.GERENTE).build();
-        Membro f = Membro.builder().id(2L).nome("F").atribuicao(AtribuicaoMembro.FUNCIONARIO).build();
+        UUID idG = UUID.fromString("11111111-1111-1111-1111-111111111111");
+        UUID idF = UUID.fromString("22222222-2222-2222-2222-222222222222");
+        Membro g = Membro.builder().id(idG).nome("G").atribuicao(AtribuicaoMembro.GERENTE).build();
+        Membro f = Membro.builder().id(idF).nome("F").atribuicao(AtribuicaoMembro.FUNCIONARIO).build();
         Set<Membro> set = new HashSet<>();
         set.add(f);
 
         LocalDate ini = LocalDate.of(2025, 1, 1);
         Projeto p = Projeto.builder()
-                .id(9L)
+                .id(UUID.fromString("99999999-9999-9999-9999-999999999999"))
                 .nome("Proj")
                 .dataInicio(ini)
                 .previsaoTermino(ini.plusMonths(2))
@@ -43,6 +46,6 @@ class ProjetoMapperTest {
 
         assertThat(dto.classificacaoRisco()).isEqualTo(ClassificacaoRisco.BAIXO);
         assertThat(dto.membrosAlocados()).hasSize(1);
-        assertThat(dto.gerenteId()).isEqualTo(1L);
+        assertThat(dto.gerenteId()).isEqualTo(idG);
     }
 }
