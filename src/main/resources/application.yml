@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/dbportfolio
     username: portfolio
-    password: "portfólio2026"
+    password: "portfolio2026"
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10

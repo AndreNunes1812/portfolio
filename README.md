@@ -25,7 +25,7 @@ API REST para gestão de portfólio de projetos: cadastro de projetos com membro
 O datasource padrão está em `src/main/resources/application.yml`:
 
 - URL JDBC: `jdbc:postgresql://localhost:5432/dbportfolio`
-- Usuário e senha conforme o arquivo (ajuste para seu ambiente local ou produção).
+- Usuário: `portfolio`; senha: conforme `spring.datasource.password` no arquivo (ex.: `portfolio2026` no exemplo local, alinhado ao `container/docker-compose.yml`).
 
 **Recomendação:** em produção, não versionar credenciais; use variáveis de ambiente ou um segredo externo e sobrescreva `spring.datasource.*` conforme a [documentação do Spring Boot](https://docs.spring.io/spring-boot/reference/features/external-config.html).
 
